@@ -15,6 +15,7 @@ namespace Wemail.ViewModels
 
         //Region管理对象
         private IRegionManager _regionManager;
+
         private IModuleCatalog _moduleCatalog;
         private ObservableCollection<IModuleInfo> _modules;
         private DelegateCommand _loadModules;
@@ -35,14 +36,14 @@ namespace Wemail.ViewModels
 
         public DelegateCommand LoadModules { get => _loadModules = new DelegateCommand(InitModules); }
 
-        public IModuleInfo ModuleInfo 
-        { 
-            get 
+        public IModuleInfo ModuleInfo
+        {
+            get
             {
-                return _moduleInfo; 
+                return _moduleInfo;
             }
 
-            set 
+            set
             {
                 _moduleInfo = value;
                 Navigate(value);
@@ -55,13 +56,13 @@ namespace Wemail.ViewModels
             _moduleCatalog = moduleCatalog;
         }
 
-        public void InitModules() 
+        public void InitModules()
         {
             var dirModuleCatalog = _moduleCatalog as DirectoryModuleCatalog;
-            Modules.AddRange(dirModuleCatalog.Modules);
+            Modules.AddRange(dirModuleCatalog?.Modules);
         }
 
-        private void Navigate(IModuleInfo info) 
+        private void Navigate(IModuleInfo info)
         {
             _regionManager.RequestNavigate("ContentRegion", $"{ info.ModuleName }View");
         }
