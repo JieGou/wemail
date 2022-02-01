@@ -13,6 +13,9 @@
         <DataTemplate x:Key="ModuleViewTemplate">
             <TextBlock Text="{Binding ModuleName}" />
         </DataTemplate>
+        <FontFamily x:Key="TextBlockFontFamily">
+            pack://application:,,,/Wemail;component/Fonts/#FontAwesome
+        </FontFamily>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -44,15 +47,29 @@
                 Command="{Binding OpenViewB}"
                 Content="OpenB" />
             <Button
-                Width="150"
                 Height="30"
                 Command="{Binding GoBackView}"
-                Content="GoBack" />
+                ToolTip="后退"
+                ToolTipService.ShowOnDisabled="True">
+                <Button.Content>
+                    <TextBlock
+                        FontFamily="{StaticResource TextBlockFontFamily}"
+                        FontSize="25"
+                        Text="&#xf0a8;" />
+                </Button.Content>
+            </Button>
             <Button
-                Width="150"
                 Height="30"
                 Command="{Binding GoForwardView}"
-                Content="GoForward" />
+                ToolTip="前进"
+                ToolTipService.ShowOnDisabled="True">
+                <Button.Content>
+                    <TextBlock
+                        FontFamily="{StaticResource TextBlockFontFamily}"
+                        FontSize="25"
+                        Text="&#xf0a9;" />
+                </Button.Content>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>

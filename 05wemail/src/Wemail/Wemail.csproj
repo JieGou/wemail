@@ -6,9 +6,15 @@
     <AssemblyName>Wemail</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Fonts\fontawesome-webfont.ttf" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Prism.DryIoc" Version="8.0.0.1909" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wemail.Common\Wemail.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Fonts\fontawesome-webfont.ttf" />
   </ItemGroup>
 </Project>

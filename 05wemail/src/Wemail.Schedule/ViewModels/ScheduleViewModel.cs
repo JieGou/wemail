@@ -13,6 +13,7 @@ namespace Wemail.Schedule.ViewModels
     public class ScheduleViewModel : BindableBase, INavigationAware
     {
         private string _message;
+
         public string Message
         {
             get { return _message; }
@@ -28,7 +29,11 @@ namespace Wemail.Schedule.ViewModels
         {
             var parameter = navigationContext.Parameters["Schedule"];
             //导航到当前页面前, 此处可以传递过来的参数以及是否允许导航等动作的控制
-            if (parameter == null) return;
+            if (parameter == null)
+            {
+                return;
+            }
+
             Debug.WriteLine(parameter.ToString() + "To Schedule View.");
         }
 

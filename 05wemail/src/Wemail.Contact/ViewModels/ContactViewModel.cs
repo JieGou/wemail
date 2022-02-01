@@ -11,20 +11,21 @@ using System.Threading.Tasks;
 
 namespace Wemail.Contact.ViewModels
 {
-    public class ContactViewModel : BindableBase , INavigationAware
+    public class ContactViewModel : BindableBase, INavigationAware
     {
         private ObservableCollection<string> _contacts;
 
         private string _message;
+
         public string Message
         {
             get { return _message; }
             set { SetProperty(ref _message, value); }
         }
 
-        public ObservableCollection<string> Contacts 
-        { 
-            get => _contacts ?? (_contacts = new ObservableCollection<string>()); 
+        public ObservableCollection<string> Contacts
+        {
+            get => _contacts ?? (_contacts = new ObservableCollection<string>());
         }
 
         public ContactViewModel()
@@ -36,9 +37,14 @@ namespace Wemail.Contact.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
+            //传递的参数
             var parameter = navigationContext.Parameters["Contact"];
 
-            if (parameter == null) return;
+            if (parameter == null)
+            {
+                return;
+            }
+
             //导航到当前页面前, 此处可以传递过来的参数以及是否允许导航等动作的控制
             Debug.WriteLine(parameter.ToString() + "To Contact View.");
         }
