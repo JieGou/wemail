@@ -98,3 +98,7 @@ bin
 bin
 /05wemail/src/Wemail.Resource/bin
 *.csproj.user
+.vs
+bin
+bin
+bin

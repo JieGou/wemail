@@ -18,6 +18,7 @@ namespace Wemail.ViewModels
 
         //Region管理对象
         private IRegionManager _regionManager;
+
         private IModuleCatalog _moduleCatalog;
         private ObservableCollection<IModuleInfo> _modules;
         private DelegateCommand _loadModulesCommand;
@@ -45,35 +46,47 @@ namespace Wemail.ViewModels
 
         public DelegateCommand LoadModulesCommand { get => _loadModulesCommand = new DelegateCommand(InitModules); }
 
-        public IModuleInfo ModuleInfo 
-        { 
-            get 
+        public IModuleInfo ModuleInfo
+        {
+            get
             {
-                return _moduleInfo; 
+                return _moduleInfo;
             }
 
-            set 
+            set
             {
                 _moduleInfo = value;
                 Navigate(value);
             }
         }
 
-        public DelegateCommand OpenViewA 
-        { 
+        public DelegateCommand OpenViewA
+        {
             get => _openViewA ?? (_openViewA = new DelegateCommand(OpenViewAAction));
         }
 
         public DelegateCommand OpenViewB
         {
-            get => _openViewB ?? (_openViewB = new DelegateCommand(OpenViewBAction)); 
+            get => _openViewB ?? (_openViewB = new DelegateCommand(OpenViewBAction));
         }
 
-        public DelegateCommand GoBackView { get => _goBackView ?? (_goBackView = new DelegateCommand(GoBackViewAction)); }
+        public DelegateCommand GoBackView
+        {
+            get =>
+                _goBackView ??
+                (_goBackView = new DelegateCommand(GoBackViewAction,
+                    () => _navigationJournal != null && _navigationJournal.CanGoBack));
+        }
 
-        public DelegateCommand GoForwardView { get => _goForwardView ?? (_goForwardView = new DelegateCommand(GoForwardViewAction)); }
+        public DelegateCommand GoForwardView
+        {
+            get =>
+                _goForwardView ??
+                (_goForwardView = new DelegateCommand(GoForwardViewAction,
+                    () => _navigationJournal != null && _navigationJournal.CanGoForward));
+        }
 
-        public MainWindowViewModel(IRegionManager regionManager, IModuleCatalog moduleCatalog,ILogger logger)
+        public MainWindowViewModel(IRegionManager regionManager, IModuleCatalog moduleCatalog, ILogger logger)
         {
             //throw new Exception("hello world.");
             logger.LogInformation("hhhhhhh");
@@ -87,11 +100,14 @@ namespace Wemail.ViewModels
         {
             //_regionManager.RequestNavigate("ContentRegion", "TempViewA");
 
-            _regionManager.RequestNavigate("ContentRegion", "TempViewA",arg=> 
-            {
-                //记录导航日志上下文
-                _navigationJournal = arg.Context.NavigationService.Journal;
-            });
+            _regionManager.RequestNavigate("ContentRegion", "TempViewA", arg =>
+             {
+                 //记录导航日志上下文
+                 _navigationJournal = arg.Context.NavigationService.Journal;
+
+                 GoForwardView.RaiseCanExecuteChanged();
+                 GoBackView.RaiseCanExecuteChanged();
+             });
         }
 
         private void OpenViewBAction()
@@ -102,6 +118,9 @@ namespace Wemail.ViewModels
             {
                 //记录导航日志上下文
                 _navigationJournal = arg.Context.NavigationService.Journal;
+
+                GoForwardView.RaiseCanExecuteChanged();
+                GoBackView.RaiseCanExecuteChanged();
             });
         }
 
@@ -114,6 +133,9 @@ namespace Wemail.ViewModels
             {
                 _navigationJournal.GoBack();
             }
+
+            GoForwardView.RaiseCanExecuteChanged();
+            GoBackView.RaiseCanExecuteChanged();
         }
 
         /// <summary>
@@ -125,15 +147,18 @@ namespace Wemail.ViewModels
             {
                 _navigationJournal.GoForward();
             }
+
+            GoForwardView.RaiseCanExecuteChanged();
+            GoBackView.RaiseCanExecuteChanged();
         }
 
-        public void InitModules() 
+        public void InitModules()
         {
             var dirModuleCatalog = _moduleCatalog as DirectoryModuleCatalog;
             Modules.AddRange(dirModuleCatalog.Modules);
         }
 
-        private void Navigate(IModuleInfo info) 
+        private void Navigate(IModuleInfo info)
         {
             var paramete = new NavigationParameters();
             //任意定义key，value。导航到的视图按照约定key获取value即可。

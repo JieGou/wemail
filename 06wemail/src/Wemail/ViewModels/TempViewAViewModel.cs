@@ -13,12 +13,12 @@ namespace Wemail.ViewModels
     {
         private ILogger _logger;
 
-        public TempViewAViewModel(ILogger logger) 
+        public TempViewAViewModel(ILogger logger)
         {
             _logger = logger;
         }
 
-        public void Do() 
+        public void Do()
         {
             try
             {
@@ -38,7 +38,9 @@ namespace Wemail.ViewModels
             // poor practice to reference your UI in the view model. Use the Prism
             // IDialogService to help with this.
             if (MessageBox.Show("Do you to navigate?", "Navigate?", MessageBoxButton.YesNo) == MessageBoxResult.No)
+            {
                 result = false;
+            }
 
             continuationCallback(result);
         }

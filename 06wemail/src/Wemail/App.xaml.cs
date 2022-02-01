@@ -18,7 +18,7 @@ namespace Wemail
     /// </summary>
     public partial class App
     {
-        Microsoft.Extensions.Logging.ILogger _logger;
+        private Microsoft.Extensions.Logging.ILogger _logger;
 
         /// <summary>
         /// 应用程序启动时创建Shell
@@ -31,11 +31,13 @@ namespace Wemail
             //Task线程内未捕获异常处理事件
             TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
             //多线程异常
-            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException; 
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             return Container.Resolve<MainWindow>();
         }
 
-        private void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        private void OnDispatcherUnhandledException(
+            object sender,
+            System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             //通常全局异常捕捉的都是致命信息
             _logger.LogCritical($"{ e.Exception.StackTrace },{ e.Exception.Message }");
@@ -62,6 +64,10 @@ namespace Wemail
             _logger = factory.CreateLogger("NLog");
             //注入到Prism DI容器中
             containerRegistry.RegisterInstance(_logger);
+
+            //注册服务、依赖、View
+            containerRegistry.RegisterForNavigation<TempViewA>();
+            containerRegistry.RegisterForNavigation<TempViewB>();
         }
 
         /// <summary>
