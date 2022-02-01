@@ -1,4 +1,5 @@
-﻿using Prism.Regions;
+﻿using System;
+using Prism.Regions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace Wemail.Common.RegionAdapters
                     regionTarget.Children.Clear();
                     foreach (var item in e.NewItems)
                     {
-                        regionTarget.Children.Add(item as UIElement);
+                        regionTarget.Children.Add(item as UIElement ?? throw new InvalidOperationException());
                     }
                 }
             };
