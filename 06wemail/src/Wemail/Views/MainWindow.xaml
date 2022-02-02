@@ -62,8 +62,8 @@
                 ToolTipService.ShowOnDisabled="True">
                 <Button.Content>
                     <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="ArrowLeftBoldCircle" />
-                        <TextBlock Text="回退" />
+                        <materialDesign:PackIcon Kind="ArrowLeftBoldCircle"  Width="24" Height="24" VerticalAlignment="Center" />
+                        <TextBlock Text="回退" VerticalAlignment="Bottom"  Margin="5,0,0,0" />
                     </StackPanel>
                 </Button.Content>
             </Button>
@@ -75,8 +75,8 @@
                 ToolTipService.ShowOnDisabled="True">
                 <Button.Content>
                     <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="ArrowRightBoldCircle" />
-                        <TextBlock Text="前进" />
+                        <materialDesign:PackIcon Kind="ArrowRightBoldCircle" Width="24" Height="24" VerticalAlignment="Center" />
+                        <TextBlock Text="前进" VerticalAlignment="Bottom" Margin="5,0,0,0" />
                     </StackPanel>
                 </Button.Content>
             </Button>
