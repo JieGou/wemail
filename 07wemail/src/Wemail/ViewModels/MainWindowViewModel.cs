@@ -19,6 +19,7 @@ namespace Wemail.ViewModels
 
         //Region管理对象
         private IRegionManager _regionManager;
+
         private IModuleCatalog _moduleCatalog;
         private IModuleInfo _moduleInfo;
         private ILogger _logger;
@@ -26,7 +27,7 @@ namespace Wemail.ViewModels
         private ObservableCollection<IModuleInfo> _modules;
         private DelegateCommand _loadModulesCommand;
         private DelegateCommand _showDialogCommand;
-        
+
         public IView View { get; set; }
 
         public string Title
@@ -42,35 +43,46 @@ namespace Wemail.ViewModels
 
         public DelegateCommand LoadModulesCommand { get => _loadModulesCommand = new DelegateCommand(InitModules); }
 
-        public IModuleInfo ModuleInfo 
-        { 
-            get 
+        public IModuleInfo ModuleInfo
+        {
+            get
             {
-                return _moduleInfo; 
+                return _moduleInfo;
             }
 
-            set 
+            set
             {
                 _moduleInfo = value;
                 Navigate(value);
             }
         }
 
-        public DelegateCommand ShowDialogCommand { get => _showDialogCommand = new DelegateCommand(ShowDialogAction); }
+        public DelegateCommand ShowDialogCommand
+        {
+            get => _showDialogCommand = new DelegateCommand(ShowDialogAction);
+        }
 
         private void ShowDialogAction()
         {
-            _dialogService.ShowDialog("MessageDialogView", (r) => 
-            {
-                var result = r.Result;
-                if (result == ButtonResult.OK) 
-                {
-                    var parameter = r.Parameters.GetValue<string>("MessageContent");
-                }
-            });
+            //添加传递参数到窗口
+            var p = new DialogParameters();
+            p.Add("Value", "Hello from MainWindowViewModel");
+
+            _dialogService.ShowDialog("MessageDialogView", p, (r) =>
+             {
+                 var result = r.Result;
+                 if (result == ButtonResult.OK)
+                 {
+                     var parameter = r.Parameters.GetValue<string>("MessageContent");
+                 }
+             });
         }
 
-        public MainWindowViewModel(IRegionManager regionManager, IModuleCatalog moduleCatalog,ILogger logger,IDialogService dialogService)
+        public MainWindowViewModel(
+            IRegionManager regionManager,
+            IModuleCatalog moduleCatalog,
+            ILogger logger,
+            IDialogService dialogService)
         {
             _dialogService = dialogService;
             _logger = logger;
@@ -78,13 +90,13 @@ namespace Wemail.ViewModels
             _moduleCatalog = moduleCatalog;
         }
 
-        public void InitModules() 
+        public void InitModules()
         {
             var dirModuleCatalog = _moduleCatalog as DirectoryModuleCatalog;
             Modules.AddRange(dirModuleCatalog.Modules);
         }
 
-        private void Navigate(IModuleInfo info) 
+        private void Navigate(IModuleInfo info)
         {
             var paramete = new NavigationParameters();
             //任意定义key，value。导航到的视图按照约定key获取value即可。

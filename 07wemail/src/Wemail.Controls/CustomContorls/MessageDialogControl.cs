@@ -9,41 +9,50 @@ using System.Threading.Tasks;
 
 namespace Wemail.Controls.CustomContorls
 {
-    public class MessageDialogControl : BindableBase , IDialogAware
+    public class MessageDialogControl : BindableBase, IDialogAware
     {
         private DelegateCommand _getMessageCommand;
         private DelegateCommand _cancelMessageCommand;
         private string _messageContent;
 
-        public string MessageContent 
-        { 
+        public string MessageContent
+        {
             get => _messageContent;
-            set 
+            set
             {
                 _messageContent = value;
                 SetProperty(ref _messageContent, value);
             }
         }
 
-        public DelegateCommand GetMessageCommand 
+        /// <summary>
+        /// 确定命令
+        /// </summary>
+        public DelegateCommand GetMessageCommand
         {
-            get => _getMessageCommand = new DelegateCommand(() => 
+            get => _getMessageCommand = new DelegateCommand(() =>
             {
                 var parameter = new DialogParameters();
                 parameter.Add("MessageContent", MessageContent);
+
+                //关闭 并回传参数回去
                 RequestClose?.Invoke(new DialogResult(ButtonResult.OK, parameter));
             });
         }
 
-        public DelegateCommand CancelMessageCommand 
-        { 
-            get => _cancelMessageCommand = new DelegateCommand(() => 
+        /// <summary>
+        /// 取消命令
+        /// </summary>
+        public DelegateCommand CancelMessageCommand
+        {
+            get => _cancelMessageCommand = new DelegateCommand(() =>
             {
                 RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel));
             });
         }
 
         public string Title => "Message";
+
         public event Action<IDialogResult> RequestClose;
 
         /// <summary>
@@ -61,7 +70,6 @@ namespace Wemail.Controls.CustomContorls
         /// <exception cref="NotImplementedException"></exception>
         public void OnDialogClosed()
         {
-            
         }
 
         /// <summary>
@@ -71,8 +79,14 @@ namespace Wemail.Controls.CustomContorls
         /// <exception cref="NotImplementedException"></exception>
         public void OnDialogOpened(IDialogParameters parameters)
         {
+            //接收传递到对话框的参数
             var parameterContent = parameters.GetValue<string>("Value");
+            if (string.IsNullOrEmpty(parameterContent))
+            {
+                return;
+            }
 
+            MessageContent = parameterContent;
         }
     }
 }
