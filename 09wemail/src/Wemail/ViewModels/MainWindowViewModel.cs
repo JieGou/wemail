@@ -7,6 +7,7 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
+using Wemail.Common;
 using Wemail.Common.MVVM;
 using Wemail.Common.User;
 using Wemail.Models;
@@ -27,7 +28,6 @@ namespace Wemail.ViewModels
         private ObservableCollection<MainModel> _modules;
         private DelegateCommand _loadModulesCommand;
         private DelegateCommand _loginCommand;
-        
 
         public IView View { get; set; }
 
@@ -45,13 +45,13 @@ namespace Wemail.ViewModels
         public DelegateCommand LoadModulesCommand { get => _loadModulesCommand = new DelegateCommand(InitModules); }
 
         public MainModel CurrentModel
-        { 
-            get 
+        {
+            get
             {
-                return _currentModel; 
+                return _currentModel;
             }
 
-            set 
+            set
             {
                 _currentModel = value;
                 Navigate(value);
@@ -60,8 +60,12 @@ namespace Wemail.ViewModels
 
         public DelegateCommand LoginCommand { get => _loginCommand ?? (_loginCommand = new DelegateCommand(LoginAtion)); }
 
-        public MainWindowViewModel(IRegionManager regionManager, IModuleCatalog moduleCatalog,
-          IDialogService dialogService,  ILogger logger,IUser user)
+        public MainWindowViewModel(
+            IRegionManager regionManager,
+            IModuleCatalog moduleCatalog,
+            IDialogService dialogService,
+            ILogger logger,
+            IUser user)
         {
             _user = user;
             _logger = logger;
@@ -72,19 +76,19 @@ namespace Wemail.ViewModels
 
         private void LoginAtion()
         {
-            _dialogService.ShowDialog("UserLoginView", (r)=> 
+            _dialogService.ShowDialog("UserLoginView", (r) =>
             {
                 var result = r.Result;
                 if (result == ButtonResult.OK)
                 {
-                    var loginStatus = r.Parameters.GetValue<bool>("LoginStatus");
-                    _user.SetUserLoginState(loginStatus);
+                    var loginStatus = r.Parameters.GetValue<UserModel>("LoginStatus");
+                    //_user.SetUserLoginState(loginStatus);
+                    _user = loginStatus;
                 }
             });
         }
 
-
-        private void InitModules() 
+        private void InitModules()
         {
             var dirModuleCatalog = _moduleCatalog as DirectoryModuleCatalog;
             foreach (var module in dirModuleCatalog.Items)
@@ -93,16 +97,17 @@ namespace Wemail.ViewModels
                 switch (tempModule.ModuleName)
                 {
                     case "Contact":
-                        Modules.Add(new MainModel() { DisplayName = "联系人" , Name = tempModule.ModuleName, IConPath = "/Wemail.Resource;component/imgs/contact_icon.png" });
+                        Modules.Add(new MainModel() { DisplayName = "联系人", Name = tempModule.ModuleName, IConPath = "/Wemail.Resource;component/imgs/contact_icon.png" });
                         break;
+
                     case "Schedule":
-                        Modules.Add(new MainModel() { DisplayName = "规划" , Name = tempModule.ModuleName, IConPath = "/Wemail.Resource;component/imgs/schedule_icon.png" });
+                        Modules.Add(new MainModel() { DisplayName = "规划", Name = tempModule.ModuleName, IConPath = "/Wemail.Resource;component/imgs/schedule_icon.png" });
                         break;
                 }
             }
         }
 
-        private void Navigate(MainModel model) 
+        private void Navigate(MainModel model)
         {
             var paramete = new NavigationParameters();
             paramete.Add($"{ model.Name }", DateTime.Now.ToString());

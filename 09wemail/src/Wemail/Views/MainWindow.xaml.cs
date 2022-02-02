@@ -46,7 +46,7 @@ namespace Wemail.Views
             {
                 this.DragMove();
             }
-            catch (System.Exception){}
+            catch (System.Exception) { }
         }
     }
 }
