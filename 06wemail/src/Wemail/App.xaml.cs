@@ -35,9 +35,8 @@ namespace Wemail
             return Container.Resolve<MainWindow>();
         }
 
-        private void OnDispatcherUnhandledException(
-            object sender,
-            System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        private void OnDispatcherUnhandledException(object sender,
+                                                    System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             //通常全局异常捕捉的都是致命信息
             _logger.LogCritical($"{ e.Exception.StackTrace },{ e.Exception.Message }");

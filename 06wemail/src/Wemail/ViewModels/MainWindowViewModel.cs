@@ -86,7 +86,9 @@ namespace Wemail.ViewModels
                     () => _navigationJournal != null && _navigationJournal.CanGoForward));
         }
 
-        public MainWindowViewModel(IRegionManager regionManager, IModuleCatalog moduleCatalog, ILogger logger)
+        public MainWindowViewModel(IRegionManager regionManager,
+                                   IModuleCatalog moduleCatalog,
+                                   ILogger logger)
         {
             //throw new Exception("hello world.");
             logger.LogInformation("hhhhhhh");
