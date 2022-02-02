@@ -8,6 +8,6 @@
     <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(ProjectDir)bin\Debug\net5.0-windows\Wemail.Schedule.dll&quot; &quot;F:\博客相关资料\文章\wemail\wemail\08wemail\src\Wemail\bin\Debug\net5.0-windows\Apps\&quot; /Y /S" />
+    <Exec Command="xcopy $(TargetDir)$(TargetFileName) &quot;$(SolutionDir)$(OutDir)Apps\&quot; /Y" />
   </Target>
 </Project>
