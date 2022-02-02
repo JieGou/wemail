@@ -11,6 +11,6 @@
     <ProjectReference Include="..\Wemail.Common\Wemail.Common.csproj" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy $(TargetDir)$(TargetFileName) &quot;$(SolutionDir)$(OutDir)Apps\&quot; /Y" />
+    <Exec Command="echo Configuration: $(Configuration)&#xD;&#xA;&#xD;&#xA;if $(Configuration) == Debug goto debug&#xD;&#xA;if $(Configuration) == Release goto release&#xD;&#xA;&#xD;&#xA;:debug&#xD;&#xA;echo Copy all files to Apps 注意:在模块与主程序引用相同的项目时,模块引用dll不复制&#xD;&#xA;XCOPY &quot;$(TargetDir)\$(TargetName)*&quot; &quot;$(SolutionDir)$(OutDir)Apps\&quot; /Y /R /F /I /S&#xD;&#xA;goto exit&#xD;&#xA;&#xD;&#xA;:release&#xD;&#xA;echo copy all dll files to Apps&#xD;&#xA;XCOPY $(TargetDir)$(TargetFileName) &quot;$(SolutionDir)$(OutDir)Apps\&quot; /Y /R /F /I /S&#xD;&#xA;goto exit&#xD;&#xA;&#xD;&#xA;:exit" />
   </Target>
 </Project>
