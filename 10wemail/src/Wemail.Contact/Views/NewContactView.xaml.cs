@@ -26,7 +26,10 @@ namespace Wemail.Contact.Views
         public NewContactView()
         {
             InitializeComponent();
-            (DataContext as NewContactViewModel).View = this;
+            if (DataContext != null)
+            {
+                ((NewContactViewModel)DataContext).View = this;
+            }
         }
 
         public bool Launch()
@@ -42,7 +45,6 @@ namespace Wemail.Contact.Views
 
         private void Window_Error(object sender, ValidationErrorEventArgs e)
         {
-
         }
     }
 }

@@ -2,13 +2,27 @@
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
+using Wemail.Common;
+using Wemail.Common.User;
 using Wemail.DAL;
 
 namespace Wemail.ViewModels
 {
     public class UserLoginViewModel : BindableBase, IDialogAware
     {
-        private string _account, _passworld;
+        //private string _account, _passworld;
+        private UserModel _userModel;
+
+        public UserModel UserModel
+        {
+            get { return _userModel; }
+            set { SetProperty(ref _userModel, value); }
+        }
+
+        public UserLoginViewModel(IUser user)
+        {
+            _userModel = user as UserModel;
+        }
 
         private DelegateCommand _loginCommand;
         private DelegateCommand _cancelCommand;
@@ -17,8 +31,8 @@ namespace Wemail.ViewModels
 
         public DelegateCommand LoginCommand { get => _loginCommand = new DelegateCommand(LoginAction); }
         public DelegateCommand CancelCommand { get => _cancelCommand = new DelegateCommand(CancelAction); }
-        public string Account { get => _account; set { SetProperty(ref _account, value); } }
-        public string Passworld { get => _passworld; set { SetProperty(ref _passworld, value); } }
+        //public string Account { get => _account; set { SetProperty(ref _account, value); } }
+        //public string Passworld { get => _passworld; set { SetProperty(ref _passworld, value); } }
 
         private void CancelAction()
         {
@@ -27,7 +41,7 @@ namespace Wemail.ViewModels
 
         private void LoginAction()
         {
-            var userDto = HttpHelper.Login(Account, Passworld);
+            var userDto = HttpHelper.Login(UserModel.Account, UserModel.Passworld);
 
             if (userDto != null && !string.IsNullOrEmpty(userDto.Token))
             {
@@ -46,7 +60,6 @@ namespace Wemail.ViewModels
 
         public void OnDialogClosed()
         {
-            
         }
 
         public void OnDialogOpened(IDialogParameters parameters)

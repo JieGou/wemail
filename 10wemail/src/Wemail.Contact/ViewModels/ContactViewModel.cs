@@ -13,7 +13,7 @@ using Wemail.DAL.DTOs;
 
 namespace Wemail.Contact.ViewModels
 {
-    public class ContactViewModel : BindableBase , INavigationAware
+    public class ContactViewModel : BindableBase, INavigationAware
     {
         private IDialogService _dialogService;
         private IUser _user;
@@ -21,15 +21,16 @@ namespace Wemail.Contact.ViewModels
         private DelegateCommand _launchCommand;
 
         private string _message;
+
         public string Message
         {
             get { return _message; }
             set { SetProperty(ref _message, value); }
         }
 
-        public ObservableCollection<ContactModel> Contacts 
-        { 
-            get => _contacts ?? (_contacts = new ObservableCollection<ContactModel>()); 
+        public ObservableCollection<ContactModel> Contacts
+        {
+            get => _contacts ?? (_contacts = new ObservableCollection<ContactModel>());
         }
 
         public IView View { get; set; }
@@ -37,7 +38,7 @@ namespace Wemail.Contact.ViewModels
 
         private void LaunchAction()
         {
-           View.Launch();
+            View.Launch();
         }
 
         public ContactViewModel(IDialogService dialogService, IUser user)
@@ -74,28 +75,31 @@ namespace Wemail.Contact.ViewModels
         {
         }
 
-        private void InitData() 
+        private void InitData()
         {
-            Application.Current.Dispatcher.Invoke(() => 
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 Contacts.Clear();
                 var contactsDTO = HttpHelper.GetContacts();
                 Contacts.AddRange(ConvertToModel(contactsDTO));
+
+                //TODO 怎样实时刷新联系人列表
+                RaisePropertyChanged(nameof(Contacts));
             });
         }
 
-        private List<ContactModel> ConvertToModel(List<ContactDTO> contacts) 
+        private List<ContactModel> ConvertToModel(List<ContactDTO> contacts)
         {
             List<ContactModel> result = new List<ContactModel>();
-            contacts.ForEach(contact => 
+            contacts.ForEach(contact =>
             {
-                result.Add(new ContactModel 
-                { 
-                    Name = contact.Name ,
-                    Age = contact.Age , 
-                    Mail = contact.Mail ,
-                    Phone = contact.Phone ,
-                    Sex = contact.Sex 
+                result.Add(new ContactModel
+                {
+                    Name = contact.Name,
+                    Age = contact.Age,
+                    Mail = contact.Mail,
+                    Phone = contact.Phone,
+                    Sex = contact.Sex
                 });
             });
             return result;

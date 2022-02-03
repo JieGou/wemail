@@ -7,7 +7,7 @@ namespace Wemail.DAL
     public class HttpHelper
     {
         //Minimal api 实现真实web api 服务
-        private static List<ContactDTO> contacts = new List<ContactDTO>() 
+        private static List<ContactDTO> contacts = new List<ContactDTO>()
         {
             new ContactDTO { Mail = "zhuzhen723723@163.com", Age = 18, Name = "juster", Sex = 1, Phone = "12345678910" }
         };
@@ -19,17 +19,29 @@ namespace Wemail.DAL
             return result;
         }
 
-        public static bool Insert(string mail, string phone, string name, int age, int sex)
+        public static bool Insert(string mail, string phone, string name, int? age, int? sex)
         {
-            contacts.Add(new ContactDTO { Mail = mail, Age = age, Name = name, Sex = sex, Phone = phone });
+            var contactDto = new ContactDTO
+            {
+                Mail = mail,
+                Name = name,
+                Phone = phone
+            };
+            if (age != null && sex != null)
+            {
+                contactDto.Age = age;
+                contactDto.Sex = sex;
+            }
+            contacts.Add(contactDto);
+
             return true;
         }
 
-        public static UserDTO Login(string account,string passworld) 
+        public static UserDTO Login(string account, string passworld)
         {
             if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(passworld)) return null;
 
-            if(account.Equals("juster") && passworld.Equals("123456")) return new UserDTO() { Token = "0ca175b9c0f726a831d895e269332461" };
+            if (account.Equals("juster") && passworld.Equals("123456")) return new UserDTO() { Token = "0ca175b9c0f726a831d895e269332461" };
 
             return null;
         }

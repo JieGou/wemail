@@ -14,9 +14,9 @@ namespace Wemail.Contact.Models
 
         public string Name { get; set; }
 
-        public int Age { get; set; }
+        public int? Age { get; set; }
 
-        public int Sex { get; set; }
+        public int? Sex { get; set; }
 
         public override string ToString()
         {

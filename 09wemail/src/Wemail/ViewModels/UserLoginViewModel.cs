@@ -9,7 +9,8 @@ using Wemail.DAL;
 namespace Wemail.ViewModels
 {
     //TODO 回车按钮确认和ESC按钮退出
-    //TODO 已登录后，再点设置帐号 登录对话框应直接填充用户的信息
+    //TODO 设置弹出对话框的风格
+    //Done 已登录后，再点设置帐号 登录对话框应直接填充用户的信息
     //TODO 登录页面的确认按钮可用性 以及填充信息的数据检查
     public class UserLoginViewModel : BindableBase, IDialogAware
     {

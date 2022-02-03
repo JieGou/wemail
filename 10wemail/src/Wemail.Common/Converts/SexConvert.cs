@@ -8,6 +8,11 @@ namespace Wemail.Common.Converts
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+            {
+                return null;
+            }
+
             bool isParse = int.TryParse(value.ToString(), out int result);
             if (isParse)
             {
@@ -19,7 +24,15 @@ namespace Wemail.Common.Converts
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return null;
+            string date = (string)value;
+            if (date == "女")
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

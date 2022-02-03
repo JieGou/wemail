@@ -20,11 +20,12 @@ namespace Wemail.Mail.ViewModels
     public class MailViewModel : BindableBase, INavigationAware
     {
         private ObservableCollection<MailModel> _mails;
-        private DelegateCommand _sendCommand,_syncCommand;
+        private DelegateCommand _sendCommand, _syncCommand;
         private IDialogService _dialogService;
         private IUser _user;
 
         private string _message;
+
         public string Message
         {
             get { return _message; }
@@ -63,7 +64,6 @@ namespace Wemail.Mail.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext)
@@ -97,10 +97,57 @@ namespace Wemail.Mail.ViewModels
             var result = new List<MailModel>();
             contacts.ForEach(mail =>
             {
-                var sender = new ContactModel { Name = mail.Sender.Name, Age = mail.Sender.Age, Mail = mail.Sender.Mail, Phone = mail.Sender.Phone, Sex = mail.Sender.Sex };
-                var reciver = new ContactModel { Name = mail.Reciver.Name, Age = mail.Reciver.Age, Mail = mail.Reciver.Mail, Phone = mail.Reciver.Phone, Sex = mail.Reciver.Sex };
-                var cc = new ContactModel { Name = mail.CC.Name, Age = mail.CC.Age, Mail = mail.CC.Mail, Phone = mail.CC.Phone, Sex = mail.CC.Sex };
-                result.Add(new MailModel { Subject = mail.Subject , Content = mail.Content , Sender = sender, Reciver = reciver , CC = cc, ReciverTime = mail.ReciverTime , SendTime = mail.SendTime });
+                var sender = new ContactModel
+                {
+                    Name = mail.Sender.Name,
+                    //Age = mail.Sender.Age.Value,
+                    Mail = mail.Sender.Mail,
+                    Phone = mail.Sender.Phone,
+                    Sex = mail.Sender.Sex
+                };
+                var senderAge = mail.Sender.Age;
+                if (senderAge.HasValue)
+                {
+                    sender.Age = senderAge;
+                }
+                var reciver = new ContactModel
+                {
+                    Name = mail.Reciver.Name,
+                    //Age = mail.Reciver.Age.Value,
+                    Mail = mail.Reciver.Mail,
+                    Phone = mail.Reciver.Phone,
+                    Sex = mail.Reciver.Sex
+                };
+                var reciverAge = mail.Reciver.Age;
+                if (reciverAge.HasValue)
+                {
+                    reciver.Age = reciverAge;
+                }
+
+                var cc = new ContactModel
+                {
+                    Name = mail.CC.Name,
+                    //Age = mail.CC.Age.Value,
+                    Mail = mail.CC.Mail,
+                    Phone = mail.CC.Phone,
+                    Sex = mail.CC.Sex
+                };
+                var ccAge = mail.Reciver.Age;
+                if (ccAge.HasValue)
+                {
+                    reciver.Age = ccAge;
+                }
+
+                result.Add(new MailModel
+                {
+                    Subject = mail.Subject,
+                    Content = mail.Content,
+                    Sender = sender,
+                    Reciver = reciver,
+                    CC = cc,
+                    ReciverTime = mail.ReciverTime,
+                    SendTime = mail.SendTime
+                });
             });
             return result;
         }
