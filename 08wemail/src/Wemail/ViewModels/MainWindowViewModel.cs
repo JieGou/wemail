@@ -78,12 +78,12 @@ namespace Wemail.ViewModels
 
         public DelegateCommand PrintMsg1Command
         {
-            get => _printMsg1Command ?? (_printMsg1Command = new DelegateCommand(PrintMsgAction));
+            get => _printMsg1Command ?? (_printMsg1Command = new DelegateCommand(PrintMsgAction1));
         }
 
         public DelegateCommand PrintMsg2Command
         {
-            get => _printMsg2Command ?? (_printMsg2Command = new DelegateCommand(PrintMsgAction));
+            get => _printMsg2Command ?? (_printMsg2Command = new DelegateCommand(PrintMsgAction2));
         }
 
         public DelegateCommand<string> PrameterCommand
@@ -113,6 +113,16 @@ namespace Wemail.ViewModels
         private void PrintMsgAction()
         {
             Debug.WriteLine($"{ ++i }");
+        }
+
+        private void PrintMsgAction1()
+        {
+            MessageBox.Show("PrintMsgAction1");
+        }
+
+        private void PrintMsgAction2()
+        {
+            MessageBox.Show("PrintMsgAction2");
         }
 
         private void PrameterAction(string prameter)

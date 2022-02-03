@@ -16,17 +16,9 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}">
     <Window.Resources>
         <ResourceDictionary>
-            <Style x:Key="ModuleItemSytle" TargetType="ListBoxItem">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate>
-                            <Grid>
-                                <TextBlock Text="{Binding ModuleName}" />
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+            <DataTemplate x:Key="ModuleItemSytle">
+                <TextBlock Text="{Binding ModuleName}" />
+            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -40,7 +32,7 @@
         </Grid.RowDefinitions>
         <ListBox
             Grid.Row="1"
-            ItemContainerStyle="{StaticResource ModuleItemSytle}"
+            ItemTemplate="{StaticResource ModuleItemSytle}"
             ItemsSource="{Binding Modules}"
             SelectedItem="{Binding ModuleInfo}" />
         <ContentControl
@@ -55,10 +47,21 @@
                 Width="150"
                 Height="30"
                 Command="{Binding TempCompoCommand}"
-                Content="CompoCommand" />
+                Content="复合命令" />
             <Button
                 Width="150"
                 Height="30"
+                Command="{Binding PrintMsg1Command}"
+                Content="子命令1" />
+            <Button
+                Width="150"
+                Height="30"
+                Command="{Binding PrintMsg2Command}"
+                Content="子命令2" />
+            <Button
+                Width="150"
+                Height="30"
+                Margin="10,0,0,0"
                 Command="{Binding PrameterCommand}"
                 CommandParameter="{Binding Title}"
                 Content="PrameterCommand" />
